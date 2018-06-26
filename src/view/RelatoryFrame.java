@@ -5,7 +5,7 @@
  */
 package view;
 
-import controller.RelatoryController;
+import controller.DataAccessController;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -88,6 +88,7 @@ public class RelatoryFrame extends javax.swing.JFrame {
         btnGen = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtro"));
 
@@ -179,7 +180,7 @@ public class RelatoryFrame extends javax.swing.JFrame {
 	    @Override
 	    protected Void doInBackground(){
 		try {
-		    DefaultTableModel model = RelatoryController.loadData(rt, txtInput1.getText(), txtInput2.getText());
+		    DefaultTableModel model = DataAccessController.loadDataRelatory(rt, txtInput1.getText(), txtInput2.getText());
 		    jTable1.setModel(model);
 		} catch (SQLException ex) {
 		    ex.printStackTrace();

@@ -22,13 +22,6 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame(UserType ut) {
 	initComponents();
-	JPanel p = new RelatoryPanel();
-	setLayout(new BorderLayout(40, 10));
-	add(p, BorderLayout.NORTH);
-	p = new JPanel();
-	p.setVisible(true);
-	
-	add(p, BorderLayout.CENTER);
 	this.addWindowListener(new java.awt.event.WindowAdapter() {
 	    @Override
 	    public void windowClosing(java.awt.event.WindowEvent e) {
@@ -38,6 +31,14 @@ public class MainFrame extends javax.swing.JFrame {
 		MainFrame.this.dispose();
 	    }
 	});
+	switch(ut) {
+	    case PT_WC20:
+		btnOverview.setVisible(false);
+		break;
+	    case SR_CLERK:
+		btnOverview.setVisible(false);
+		break;
+	}
     }
 
     /**
@@ -49,22 +50,51 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        relatoryPanel1 = new view.RelatoryPanel();
+        btnOverview = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+
+        btnOverview.setText("Visualizar Overview");
+        btnOverview.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOverviewActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 840, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(relatoryPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(548, 548, 548)
+                .addComponent(btnOverview)
+                .addContainerGap(548, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 496, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(relatoryPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
+                .addComponent(btnOverview)
+                .addGap(54, 54, 54))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnOverviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOverviewActionPerformed
+        new OverviewFrame().setVisible(true);
+    }//GEN-LAST:event_btnOverviewActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOverview;
+    private view.RelatoryPanel relatoryPanel1;
     // End of variables declaration//GEN-END:variables
 }
