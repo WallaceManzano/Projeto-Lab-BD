@@ -118,7 +118,6 @@ public class OverviewFrame extends javax.swing.JFrame {
         jTable4 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Top-3 Vendedores"));
 

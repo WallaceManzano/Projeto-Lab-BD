@@ -55,7 +55,6 @@ public class MainFrame extends javax.swing.JFrame {
         simulationPanel1 = new view.SimulationPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
         btnOverview.setText("Visualizar Overview");
         btnOverview.addActionListener(new java.awt.event.ActionListener() {
