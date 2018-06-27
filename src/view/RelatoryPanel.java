@@ -108,7 +108,7 @@ public class RelatoryPanel extends javax.swing.JPanel {
 
 	    @Override
 	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		JFrame f = new RelatoryFrame(RelatoryType.TODO);
+		JFrame f = new RelatoryFrame(RelatoryType.VENDA_PRODUTO2);
 		f.setVisible(true);
 	    }
 	});

@@ -15,6 +15,7 @@ public enum RelatoryType {
     DADOS_FRETE,
     VENDAS_ANO,
     PRODUTOS_SEMESTRE,
+    VENDA_PRODUTO2,
     VENDAS_POR_PAIS,
     TODO;
 }

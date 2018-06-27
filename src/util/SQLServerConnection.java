@@ -47,6 +47,9 @@ public class SQLServerConnection {
 	try {
 	    CallableStatement cstmt = connection.prepareCall("{call TRUNCATE_DUP_BASE()}");
 	    cstmt.execute();
+	} catch (SQLException ex) {
+	}
+	try {
 	    connection.close();
 	    stmt.close();
 	    System.out.println("Connection closed");
@@ -287,6 +290,9 @@ public class SQLServerConnection {
 		param = "(?, ?, ?)";
 		cursorIndex = 3;
 		break;
+	    case VENDA_PRODUTO2:
+		procedure = "venda_produtos2";
+		break;		
 	    case VENDAS_POR_PAIS:
 		procedure = "vendas_por_pais";
 		break;
