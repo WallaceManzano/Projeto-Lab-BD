@@ -31,13 +31,15 @@ public class SQLServerConnection {
                 "jdbc:oracle:thin:@" + host + ":" + port + ":" + sid, 
                 user, pass);
 	stmt = connection.createStatement();
-	
-	CallableStatement cstmt = connection.prepareCall("{call TRUNCATE_DUP_BASE()}");
-	cstmt.execute();
-	
-	cstmt = connection.prepareCall("{call DUP_BASE()}");
-	cstmt.execute();
-	
+	try {
+	    CallableStatement cstmt = connection.prepareCall("{call TRUNCATE_DUP_BASE()}");
+	    cstmt.execute();
+
+	    cstmt = connection.prepareCall("{call DUP_BASE()}");
+	    cstmt.execute();
+	} catch(Exception e) {
+	    
+	}
 	System.out.println("Connection openned");
     }
     
@@ -238,6 +240,25 @@ public class SQLServerConnection {
     // </editor-fold>   
     
     // <editor-fold defaultstate="collapsed" desc="Relatory Method"> 
+    public ResultSet[] getRelatoryData2(RelatoryType rt, String filter1) throws SQLException {
+	String procedure = "";
+	String param = "vendas_por_pais(?, ?, ?)";
+	filter1 = (filter1 == null || filter1.equals("")) ? null : filter1;
+	ResultSet rs[] = new ResultSet[2];
+	CallableStatement cstmt = connection.prepareCall("{call " + procedure + param + "}");
+	
+	if(filter1 == null)
+	    cstmt.setObject(1, null);
+	else
+	    cstmt.setString(1, filter1); 
+	
+	cstmt.registerOutParameter(2, OracleTypes.CURSOR);
+	cstmt.registerOutParameter(3, OracleTypes.CURSOR);
+	cstmt.execute();
+	rs[0] = ((OracleCallableStatement)cstmt).getCursor(2);
+	rs[1] = ((OracleCallableStatement)cstmt).getCursor(3);
+	return rs;
+    }
     public ResultSet getRelatoryData(RelatoryType rt, String filter1, String filter2) throws SQLException {
 	String procedure = "";
 	String param = "(?, ?)";
@@ -258,6 +279,17 @@ public class SQLServerConnection {
 	    case DADOS_FRETE:
 		procedure = "dados_frete";
 		break;
+	    case VENDAS_ANO:
+		procedure = "vendas_ano";
+		break;
+	    case PRODUTOS_SEMESTRE:
+		procedure = "produtos_semestre";
+		param = "(?, ?, ?)";
+		cursorIndex = 3;
+		break;
+	    case VENDAS_POR_PAIS:
+		procedure = "vendas_por_pais";
+		break;
 	    default:
 		procedure = "";
 		break;
@@ -269,7 +301,7 @@ public class SQLServerConnection {
 		cstmt.setObject(1, null);
 	    else
 		cstmt.setString(1, filter1); 
-	    if(rt == RelatoryType.HISTORICO_FUNCIONARIOS) {
+	    if(rt == RelatoryType.HISTORICO_FUNCIONARIOS || rt == RelatoryType.PRODUTOS_SEMESTRE) {
 		if(filter2 == null)
 		    cstmt.setObject(2, null);
 		else

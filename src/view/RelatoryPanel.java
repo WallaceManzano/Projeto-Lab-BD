@@ -80,7 +80,7 @@ public class RelatoryPanel extends javax.swing.JPanel {
 
 	    @Override
 	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		JFrame f = new RelatoryFrame(RelatoryType.TODO);
+		JFrame f = new RelatoryFrame(RelatoryType.VENDAS_ANO);
 		f.setVisible(true);
 	    }
 	});
@@ -94,7 +94,7 @@ public class RelatoryPanel extends javax.swing.JPanel {
 
 	    @Override
 	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		JFrame f = new RelatoryFrame(RelatoryType.TODO);
+		JFrame f = new RelatoryFrame(RelatoryType.PRODUTOS_SEMESTRE);
 		f.setVisible(true);
 	    }
 	});
@@ -102,7 +102,7 @@ public class RelatoryPanel extends javax.swing.JPanel {
 	
 	
 	b = new JButton();
-	b.setText("<html><div style='text-align: center;'><p style=\"width:120px\">Produtos Mais Vendidos por Venda</p></div></html>");
+	b.setText("<html><div style='text-align: center;'><p style=\"width:120px\">Par de Produtos Mais Vendidos por Venda</p></div></html>");
 	
 	b.addActionListener(new java.awt.event.ActionListener() {
 
@@ -122,7 +122,7 @@ public class RelatoryPanel extends javax.swing.JPanel {
 
 	    @Override
 	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		JFrame f = new RelatoryFrame(RelatoryType.TODO);
+		JFrame f = new RelatoryFrame(RelatoryType.VENDAS_POR_PAIS);
 		f.setVisible(true);
 	    }
 	});

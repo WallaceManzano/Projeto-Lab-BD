@@ -229,3 +229,36 @@ BEGIN
             
         END IF;
 END venda_desconto_varios_itens;
+/
+-- v_tipo_de_alteracao é 0 para valor e 1 para porcentagem
+-- v_alteracao é um numero positivo, quando por valor deve ser menor que o total da venda e em porcentagem é no máximo 100
+CREATE OR REPLACE PROCEDURE venda_desconto_pais (
+    v_pais ENDERECO.PAIS%TYPE, v_desconto number, v_tipo_de_alteracao number) IS
+    v_valor_do_desconto number;
+BEGIN
+
+-- alteração por porcentagem
+    IF v_tipo_de_alteracao = 1 THEN
+        IF v_desconto<0 THEN
+            v_valor_do_desconto:=0;
+        ELSIF v_desconto > 100 THEN
+            v_valor_do_desconto := 100;
+        ELSE
+            v_valor_do_desconto := v_desconto;
+        END IF;
+        
+        UPDATE VENDA_DUP
+        SET TOTAL = TOTAL - TOTAL*(v_valor_do_desconto/100)
+        WHERE ID_CLIENTE IN (SELECT CL.ID_CLIENTE FROM CLIENTE_DUP CL JOIN PESSOA_DUP P ON CL.ID_PESSOA = P.ID_PESSOA 
+            JOIN ENDERECO_DUP E ON P.ID_ENDERECO = E.ID_ENDERECO WHERE E.PAIS = v_pais) ;
+        
+    --alteração por valor
+    ELSIF v_tipo_de_alteracao = 0 THEN
+    
+        UPDATE VENDA_DUP
+        SET TOTAL = TOTAL - ABS(v_desconto)
+        WHERE ID_CLIENTE IN (SELECT CL.ID_CLIENTE FROM CLIENTE_DUP CL JOIN PESSOA_DUP P ON CL.ID_PESSOA = P.ID_PESSOA 
+            JOIN ENDERECO_DUP E ON P.ID_ENDERECO = E.ID_ENDERECO WHERE E.PAIS = v_pais) ;
+            
+        END IF;
+END venda_desconto_pais;

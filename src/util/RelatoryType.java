@@ -13,5 +13,8 @@ public enum RelatoryType {
     CLIENTE_CARTAO,
     HISTORICO_FUNCIONARIOS,
     DADOS_FRETE,
+    VENDAS_ANO,
+    PRODUTOS_SEMESTRE,
+    VENDAS_POR_PAIS,
     TODO;
 }

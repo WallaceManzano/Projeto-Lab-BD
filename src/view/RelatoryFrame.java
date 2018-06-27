@@ -64,6 +64,20 @@ public class RelatoryFrame extends javax.swing.JFrame {
 		lblInput2.setVisible(false);
 		txtInput2.setVisible(false);
 		break;
+	    case VENDAS_ANO:
+		lblInput1.setText("Ano");
+		lblInput2.setVisible(false);
+		txtInput2.setVisible(false);
+		break;
+	    case PRODUTOS_SEMESTRE:
+		lblInput1.setText("Ano");
+		lblInput2.setText("Semestre");
+		break;
+	    case VENDAS_POR_PAIS:
+		lblInput1.setText("Ano");
+		lblInput2.setVisible(false);
+		txtInput2.setVisible(false);
+		break;
 	    case TODO:
 		break;
 	}
