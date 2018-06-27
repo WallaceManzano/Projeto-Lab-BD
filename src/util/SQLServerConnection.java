@@ -11,7 +11,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedHashMap;
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.OracleTypes;
 import org.jfree.data.xy.XYSeries;
@@ -32,8 +31,13 @@ public class SQLServerConnection {
                 "jdbc:oracle:thin:@" + host + ":" + port + ":" + sid, 
                 user, pass);
 	stmt = connection.createStatement();
-	CallableStatement cstmt = connection.prepareCall("{call DUP_BASE()}");
+	
+	CallableStatement cstmt = connection.prepareCall("{call TRUNCATE_DUP_BASE()}");
 	cstmt.execute();
+	
+	cstmt = connection.prepareCall("{call DUP_BASE()}");
+	cstmt.execute();
+	
 	System.out.println("Connection openned");
     }
     
@@ -54,9 +58,10 @@ public class SQLServerConnection {
 	if(!usr.contains("\\")) {
 	    usr = "adventure-works\\" + usr;
 	}
-	String select = "SELECT PESSOA.NOME, EMPREGADO.LOGIN, PESSOA.SENHA, EMPREGADO.FUNCAO FROM EMPREGADO JOIN PESSOA USING(ID_PESSOA) " +
-			"WHERE EMPREGADO.LOGIN = '" + usr + "' " +
-			"AND PESSOA.SENHA = rawtohex(dbms_obfuscation_toolkit.md5(input => utl_raw.cast_to_raw('" + pass + "')))";
+	String select = "SELECT PESSOA_DUP.NOME, EMPREGADO_DUP.LOGIN, PESSOA_DUP.SENHA, EMPREGADO_DUP.FUNCAO FROM EMPREGADO_DUP " + 
+			"JOIN PESSOA_DUP USING(ID_PESSOA) " +
+			"WHERE EMPREGADO_DUP.LOGIN = '" + usr + "' " +
+			"AND PESSOA_DUP.SENHA = rawtohex(dbms_obfuscation_toolkit.md5(input => utl_raw.cast_to_raw('" + pass + "')))";
 	rs = stmt.executeQuery(select);
 	if(rs.next()) {
 	    ret = rs.getString("FUNCAO");
@@ -64,8 +69,41 @@ public class SQLServerConnection {
 	return ret;
     }
     
+    public void simulateEvent(String event, String... args) throws SQLException {
+	String param = "(";
+	String callStmt = event;
+	for(String e : args) {
+	    param += ",?";
+	}
+	param = param.replaceFirst(",", "") + ")";
+	callStmt += param;
+	callStmt = "{call " + callStmt + "}";
+	CallableStatement cstmt = connection.prepareCall(callStmt);
+	int i = 1;
+	for(String e : args) {
+	    if(e == null || e.equals(""))
+		cstmt.setObject(i, null);
+	    else
+		cstmt.setString(i, e);
+	    i++;
+	}	
+	cstmt.execute();
+    
+    }
+    public ResultSet getSubcategories() throws SQLException {
+	ResultSet rs = stmt.executeQuery("SELECT DISTINCT NOME FROM SUBCATEGORIA_DUP");
+	return rs;
+    }
+    
+    public ResultSet getCountries() throws SQLException {
+	ResultSet rs = stmt.executeQuery("SELECT DISTINCT PAIS FROM ENDERECO_DUP");
+	return rs;
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc="Overview Methods"> 
     public ResultSet getProductEnding() throws SQLException {
-	ResultSet rs = stmt.executeQuery("SELECT NOME AS \"Nome\", QUANTIDADE AS \"Quantidade\" FROM PRODUTO WHERE QUANTIDADE <= 10");
+	ResultSet rs = stmt.executeQuery("SELECT ID_PRODUTO AS \"ID\", NOME AS \"Nome\", "
+		+ "QUANTIDADE AS \"Quantidade\" FROM PRODUTO_DUP WHERE QUANTIDADE <= 10");
 	return rs;
     }
     
@@ -87,7 +125,6 @@ public class SQLServerConnection {
 	while(rs.next()) {
 	    String x = rs.getString(1);
 	    String y = rs.getString(2);
-	    System.out.println("Point " + Long.parseLong(x) + ", " + Long.parseLong(y));
 	    series.add(Long.parseLong(x), Long.parseLong(y));
 }
 	return series;
@@ -132,7 +169,7 @@ public class SQLServerConnection {
 	year = (year == null || year.equals("")) ? "to_char(sysdate, 'YYYY')" : year;
 	
 	ResultSet rs;
-	rs = stmt.executeQuery("SELECT SUM(TOTAL) AS TOTAL FROM VENDA "
+	rs = stmt.executeQuery("SELECT SUM(TOTAL) AS TOTAL FROM VENDA_DUP "
 		+ "WHERE to_char(DATA_VENDA, 'YYYY') = " + year
 		+ " AND to_char(DATA_VENDA, 'MM') = " + month
 		+ " AND to_char(DATA_VENDA, 'DD') = " + day);
@@ -198,7 +235,9 @@ public class SQLServerConnection {
 	rs = ((OracleCallableStatement)cstmt).getCursor(2);
 	return rs;
     }
+    // </editor-fold>   
     
+    // <editor-fold defaultstate="collapsed" desc="Relatory Method"> 
     public ResultSet getRelatoryData(RelatoryType rt, String filter1, String filter2) throws SQLException {
 	String procedure = "";
 	String param = "(?, ?)";
@@ -242,4 +281,5 @@ public class SQLServerConnection {
 	}
 	return rs;
     }
+    //</editor-fold>
 }

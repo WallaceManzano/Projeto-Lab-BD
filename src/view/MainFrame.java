@@ -5,8 +5,6 @@
  */
 package view;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
 import main.Main;
 import util.UserType;
 
@@ -34,9 +32,11 @@ public class MainFrame extends javax.swing.JFrame {
 	switch(ut) {
 	    case PT_WC20:
 		btnOverview.setVisible(false);
+		simulationPanel1.setVisible(false);
 		break;
 	    case SR_CLERK:
 		btnOverview.setVisible(false);
+		simulationPanel1.setVisible(false);
 		break;
 	}
     }
@@ -52,6 +52,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         relatoryPanel1 = new view.RelatoryPanel();
         btnOverview = new javax.swing.JButton();
+        simulationPanel1 = new view.SimulationPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
@@ -69,21 +70,24 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(relatoryPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(relatoryPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(simulationPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(layout.createSequentialGroup()
-                .addGap(548, 548, 548)
-                .addComponent(btnOverview)
-                .addContainerGap(548, Short.MAX_VALUE))
+                .addGap(505, 505, 505)
+                .addComponent(btnOverview, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                .addGap(505, 505, 505))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(relatoryPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
+                .addGap(61, 61, 61)
+                .addComponent(simulationPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                 .addComponent(btnOverview)
-                .addGap(54, 54, 54))
+                .addGap(44, 44, 44))
         );
 
         pack();
@@ -96,5 +100,6 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOverview;
     private view.RelatoryPanel relatoryPanel1;
+    private view.SimulationPanel simulationPanel1;
     // End of variables declaration//GEN-END:variables
 }
